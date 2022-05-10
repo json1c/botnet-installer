@@ -23,14 +23,16 @@ if  [[ $(uname -o) = 'Android' ]]; then
         echo "Package manager : pkg"
         echo "Installings packages for your system..."
         sleep 5
-        pkg update && pkg upgrade && pkg install -y ffmpeg nodejs youtube-dl git python python-pip && pip3 install -r $req
+        pkg update && pkg upgrade
+        pkg install -y ffmpeg nodejs youtube-dl git python python-pip
+        pip3 install -r $req
         clear
         echo "All packages installed!"
         sleep 2 
         clear
         echo "Starting installing botnet..."
         sleep 2
-        cd ~ && git clone https://github.com/json1c/telegram-raid-botnet.git ~/telegram-raid-botnet && cd telegram-raid-botnet && python main.py
+        cd ~ && git clone https://github.com/json1c/telegram-raid-botnet.git && cd telegram-raid-botnet && python main.py
 fi
 elif cat /etc/*release | grep ^NAME | grep CentOS || cat /etc/*release | grep ^NAME | grep Red || cat /etc/*release | grep ^NAME | grep Fedora; then 
     if [[ $(whoami) = 'root' ]]; then
@@ -76,7 +78,7 @@ elif [[ "$OSTYPE" =~ ^WSL2 ]]; then
             echo "Please launch autoinstall with root"
             exit 1;
 fi
-elif cat /etc/*release | grep ^NAME | grep -r Arch Linux || cat /etc/*release | grep ^NAME | grep Artix || cat /etc/*release | grep ^NAME | grep Antix || cat /etc/*release | grep ^NAME | grep Manjaro || cat /etc/*release | grep ^NAME | grep Parabola; then
+elif cat /etc/*release | grep ^NAME | grep -r "Arch Linux" || cat /etc/*release | grep ^NAME | grep "Artix Linux" || cat /etc/*release | grep ^NAME | grep Antix || cat /etc/*release | grep ^NAME | grep Manjaro || cat /etc/*release | grep ^NAME | grep Parabola; then
     if [[ $(whoami) = 'root' ]]; then
         req="telethon toml rich youtube-dl py-tgcalls ffmpeg-python"
         clear

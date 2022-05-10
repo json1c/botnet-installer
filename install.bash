@@ -18,6 +18,7 @@ if  [[ $(uname -o) = 'Android' ]]; then
     if echo $PREFIX | grep -o "com.termux"; then
         req="telethon toml rich youtube-dl py-tgcalls ffmpeg-python"
         clear
+        echo "Join in our Telegram channels : @huis_bn & @bruhnet"
         echo "Detected System : Android (termux)"
         echo "Package manager : pkg"
         echo "Installings packages for your system..."
@@ -35,6 +36,7 @@ elif cat /etc/*release | grep ^NAME | grep CentOS || cat /etc/*release | grep ^N
     if [[ $(whoami) = 'root' ]]; then
         req="telethon toml rich youtube-dl py-tgcalls ffmpeg-python"
         clear
+        echo "Join in our Telegram channels : @huis_bn & @bruhnet"
         echo "Detected OS : $(cat /etc/*release | grep ^NAME)"
         echo "Packet Manager : Yum"
         echo "Installings packages for your system..."
@@ -56,6 +58,7 @@ elif [[ "$OSTYPE" =~ ^WSL2 ]]; then
     if [[ $(whoami) = 'root' ]]; then
         req="telethon toml rich youtube-dl py-tgcalls ffmpeg-python"
         clear
+        echo "Join in our Telegram channels : @huis_bn & @bruhnet"
         echo "Detected OS : $(cat /etc/*release | grep ^NAME)"
         echo "Packet Manager : Apt"
         echo "Installings packages for your system..."
@@ -77,6 +80,7 @@ elif cat /etc/*release | grep ^NAME | grep -r Arch || cat /etc/*release | grep ^
     if [[ $(whoami) = 'root' ]]; then
         req="telethon toml rich youtube-dl py-tgcalls ffmpeg-python"
         clear
+        echo "Join in our Telegram channels : @huis_bn & @bruhnet"
         echo "Detected OS : $(cat /etc/*release | grep ^NAME)"
         echo "Packet Manager : Pacman"
         echo "Installings packages for your system..."
@@ -98,6 +102,7 @@ elif  cat /etc/*release | grep ^NAME | grep Ubuntu || cat /etc/*release | grep ^
     if [[ $(whoami) = 'root' ]]; then
         req="telethon toml rich youtube-dl py-tgcalls ffmpeg-python"
         clear
+        echo "Join in our Telegram channels : @huis_bn & @bruhnet"
         echo "Detected OS : $(cat /etc/*release | grep ^NAME)"
         echo "Packet Manager : Apt"
         echo "Installings packages for your system..."

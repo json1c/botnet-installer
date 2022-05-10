@@ -16,12 +16,13 @@ set -e
 
 if  [[ $(uname -o) = 'Android' ]]; then
     if echo $PREFIX | grep -o "com.termux"; then
+        req="telethon toml rich youtube-dl py-tgcalls ffmpeg-python"
         clear
         echo "Detected System : Android (termux)"
         echo "Package manager : pkg"
         echo "Installings packages for your system..."
         sleep 5
-        pkg update && pkg upgrade && pkg install -y ffmpeg nodejs youtube-dl git python python-pip && pip3 install -r requirements.txt 
+        pkg update && pkg upgrade && pkg install -y ffmpeg nodejs youtube-dl git python python-pip && pip3 install -r $req
         clear
         echo "All packages installed!"
         sleep 2 
@@ -32,12 +33,13 @@ if  [[ $(uname -o) = 'Android' ]]; then
 fi
 elif cat /etc/*release | grep ^NAME | grep CentOS || cat /etc/*release | grep ^NAME | grep Red || cat /etc/*release | grep ^NAME | grep Fedora; then 
     if [[ $(whoami) = 'root' ]]; then
+        req="telethon toml rich youtube-dl py-tgcalls ffmpeg-python"
         clear
         echo "Detected OS : $(cat /etc/*release | grep ^NAME)"
         echo "Packet Manager : Yum"
         echo "Installings packages for your system..."
         sleep 5
-        yum install -y ffmpeg youtube-dl nodejs  git python python-pip python3-pip && pip3 install -r requirements.txt && pip3 install git+https://github.com/pytgcalls/pytgcalls -U
+        yum install -y ffmpeg youtube-dl nodejs  git python python-pip python3-pip && pip3 install -r $req && pip3 install git+https://github.com/pytgcalls/pytgcalls -U
         clear
         echo "All packages installed!"
         sleep 2
@@ -52,12 +54,13 @@ elif cat /etc/*release | grep ^NAME | grep CentOS || cat /etc/*release | grep ^N
     fi
 elif [[ "$OSTYPE" =~ ^WSL2 ]]; then
     if [[ $(whoami) = 'root' ]]; then
+        req="telethon toml rich youtube-dl py-tgcalls ffmpeg-python"
         clear
         echo "Detected OS : $(cat /etc/*release | grep ^NAME)"
         echo "Packet Manager : Apt"
         echo "Installings packages for your system..."
         sleep 5
-        apt install -y ffmpeg youtube-dl git python python-pip nodejs python3-pip && pip3 install -r requirements.txt && pip3 install git+https://github.com/pytgcalls/pytgcalls -U
+        apt install -y ffmpeg youtube-dl git python python-pip nodejs python3-pip && pip3 install -r $req && pip3 install git+https://github.com/pytgcalls/pytgcalls -U
         clear
         echo "All packages installed!"
         sleep 2
@@ -72,12 +75,13 @@ elif [[ "$OSTYPE" =~ ^WSL2 ]]; then
 fi
 elif cat /etc/*release | grep ^NAME | grep -r Arch || cat /etc/*release | grep ^NAME | grep Artix || cat /etc/*release | grep ^NAME | grep Antix || cat /etc/*release | grep ^NAME | grep Manjaro || cat /etc/*release | grep ^NAME | grep Parabola; then
     if [[ $(whoami) = 'root' ]]; then
+        req="telethon toml rich youtube-dl py-tgcalls ffmpeg-python"
         clear
         echo "Detected OS : $(cat /etc/*release | grep ^NAME)"
         echo "Packet Manager : Pacman"
         echo "Installings packages for your system..."
         sleep 5
-        yum install -y ffmpeg youtube-dl nodejs git python python-pip python3-pip && pip3 install -r requirements.txt && pip3 install git+https://github.com/pytgcalls/pytgcalls -U
+        yum install -y ffmpeg youtube-dl nodejs git python python-pip python3-pip && pip3 install -r $req && pip3 install git+https://github.com/pytgcalls/pytgcalls -U
         clear
         echo "All packages installed!"
         sleep 2
@@ -92,12 +96,13 @@ elif cat /etc/*release | grep ^NAME | grep -r Arch || cat /etc/*release | grep ^
     fi
 elif  cat /etc/*release | grep ^NAME | grep Ubuntu || cat /etc/*release | grep ^NAME | grep Debian || cat /etc/*release | grep ^NAME | grep Mint || cat /etc/*release | grep ^NAME | grep Mint; then
     if [[ $(whoami) = 'root' ]]; then
+        req="telethon toml rich youtube-dl py-tgcalls ffmpeg-python"
         clear
         echo "Detected OS : $(cat /etc/*release | grep ^NAME)"
         echo "Packet Manager : Apt"
         echo "Installings packages for your system..."
         sleep 5
-        apt-get update && apt-get install -y ffmpeg youtube-dl git nodejs  python python-pip python3-pip software-properties-common && sudo add-apt-repository ppa:deadsnakes/ppa && pip3 install -r requirements.txt && pip3 install git+https://github.com/pytgcalls/pytgcalls -U
+        apt-get update && apt-get install -y ffmpeg youtube-dl git nodejs  python python-pip python3-pip software-properties-common && sudo add-apt-repository ppa:deadsnakes/ppa && pip3 install -r $req && pip3 install git+https://github.com/pytgcalls/pytgcalls -U
         clear
         echo "All packages installed!"
         sleep 2

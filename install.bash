@@ -24,7 +24,7 @@ if  [[ $(uname -o) = 'Android' ]]; then
         echo "Installings packages for your system..."
         sleep 5
         pkg update && pkg upgrade
-        pkg install -y ffmpeg nodejs youtube-dl git python python-pip
+        pkg install -y ffmpeg nodejs youtube-dl git python 
         pip3 install -r $req
         clear
         echo "All packages installed!"
@@ -43,14 +43,15 @@ elif cat /etc/*release | grep ^NAME | grep CentOS || cat /etc/*release | grep ^N
         echo "Packet Manager : Yum"
         echo "Installings packages for your system..."
         sleep 5
-        yum install -y ffmpeg youtube-dl nodejs  git python python-pip python3-pip && pip3 install -r $req && pip3 install git+https://github.com/pytgcalls/pytgcalls -U
+        yum install -y ffmpeg nodejs git python python-pip python python3-pip&& pip3 install -r $req
         clear
         echo "All packages installed!"
         sleep 2
         clear
         echo "Starting installing botnet..."
         sleep 2
-        cd ~ && git clone https://github.com/json1c/telegram-raid-botnet.git && cd telegram-raid-botnet && python main.py
+        cd ~ && git clone https://github.com/json1c/telegram-raid-botnet.git && cd telegram-raid-botnet 
+        python main.py
         else
             clear
             echo "Please launch autoinstall with root"

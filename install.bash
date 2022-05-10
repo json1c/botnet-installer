@@ -24,7 +24,7 @@ if  [[ $(uname -o) = 'Android' ]]; then
         echo "Installings packages for your system..."
         sleep 5
         pkg update && pkg upgrade
-        pkg install -y ffmpeg nodejs youtube-dl git python 
+        pkg install -y ffmpeg nodejs git python 
         pip3 install -r $req
         clear
         echo "All packages installed!"

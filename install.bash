@@ -14,9 +14,12 @@
 # If not, see <https://www.gnu.org/licenses/>.
 set -e
 
+req="telethon toml rich youtube-dl ffmpeg-python"
+
+
 if  [[ $(uname -o) = 'Android' ]]; then
     if echo $PREFIX | grep -o "com.termux"; then
-        req="telethon toml rich youtube-dl py-tgcalls ffmpeg-python"
+        req="telethon toml rich"
         clear
         echo "Join in our Telegram channels : @huis_bn & @bruhnet"
         echo "Detected System : Android (termux)"
@@ -24,8 +27,8 @@ if  [[ $(uname -o) = 'Android' ]]; then
         echo "Installings packages for your system..."
         sleep 5
         pkg update && pkg upgrade
-        pkg install -y ffmpeg nodejs git python 
-        pip3 install -r $req
+        pkg install -y git python 
+        pip3 install -U $req
         clear
         echo "All packages installed!"
         sleep 2 
@@ -35,15 +38,15 @@ if  [[ $(uname -o) = 'Android' ]]; then
         cd ~ && git clone https://github.com/json1c/telegram-raid-botnet.git && cd telegram-raid-botnet && python main.py
 fi
 elif cat /etc/*release | grep ^NAME | grep CentOS || cat /etc/*release | grep ^NAME | grep Red || cat /etc/*release | grep ^NAME | grep Fedora; then 
-    if [[ $(whoami) = 'root' ]]; then
-        req="telethon toml rich youtube-dl py-tgcalls ffmpeg-python"
+    if [[ $UID = 0 ]]; then
         clear
         echo "Join in our Telegram channels : @huis_bn & @bruhnet"
         echo "Detected OS : $(cat /etc/*release | grep ^NAME)"
         echo "Packet Manager : Yum"
         echo "Installings packages for your system..."
         sleep 5
-        yum install -y ffmpeg nodejs git python python-pip python python3-pip&& pip3 install -r $req
+        yum -y install python39 python-pip
+        pip3 install -r $req
         clear
         echo "All packages installed!"
         sleep 2
@@ -59,14 +62,15 @@ elif cat /etc/*release | grep ^NAME | grep CentOS || cat /etc/*release | grep ^N
     fi
 elif [[ "$OSTYPE" =~ ^WSL2 ]]; then
     if [[ $(whoami) = 'root' ]]; then
-        req="telethon toml rich youtube-dl py-tgcalls ffmpeg-python"
         clear
         echo "Join in our Telegram channels : @huis_bn & @bruhnet"
         echo "Detected OS : $(cat /etc/*release | grep ^NAME)"
         echo "Packet Manager : Apt"
         echo "Installings packages for your system..."
         sleep 5
-        apt install -y ffmpeg youtube-dl git python python-pip nodejs python3-pip && pip3 install -r $req && pip3 install git+https://github.com/pytgcalls/pytgcalls -U
+        apt install -y ffmpeg youtube-dl git
+        pip3 install -U $req
+        pip3 install git+https://github.com/pytgcalls/pytgcalls -U
         clear
         echo "All packages installed!"
         sleep 2
@@ -81,14 +85,15 @@ elif [[ "$OSTYPE" =~ ^WSL2 ]]; then
 fi
 elif cat /etc/*release | grep ^NAME | grep "Arch Linux" || cat /etc/*release | grep ^NAME | grep "Artix Linux" || cat /etc/*release | grep ^NAME | grep Antix || cat /etc/*release | grep ^NAME | grep Manjaro || cat /etc/*release | grep ^NAME | grep Parabola; then
     if [[ $(whoami) = 'root' ]]; then
-        req="telethon toml rich youtube-dl py-tgcalls ffmpeg-python"
         clear
         echo "Join in our Telegram channels : @huis_bn & @bruhnet"
         echo "Detected OS : $(cat /etc/*release | grep ^NAME)"
         echo "Packet Manager : Pacman"
         echo "Installings packages for your system..."
         sleep 5
-        yum install -y ffmpeg youtube-dl nodejs git python python-pip python3-pip && pip3 install -r $req && pip3 install git+https://github.com/pytgcalls/pytgcalls -U
+        yum install -y ffmpeg
+        pip3 install -U $req
+        pip3 install git+https://github.com/pytgcalls/pytgcalls -U
         clear
         echo "All packages installed!"
         sleep 2
@@ -103,14 +108,21 @@ elif cat /etc/*release | grep ^NAME | grep "Arch Linux" || cat /etc/*release | g
     fi
 elif  cat /etc/*release | grep ^NAME | grep Ubuntu || cat /etc/*release | grep ^NAME | grep Debian || cat /etc/*release | grep ^NAME | grep Mint || cat /etc/*release | grep ^NAME | grep Mint; then
     if [[ $(whoami) = 'root' ]]; then
-        req="telethon toml rich youtube-dl py-tgcalls ffmpeg-python"
         clear
         echo "Join in our Telegram channels : @huis_bn & @bruhnet"
         echo "Detected OS : $(cat /etc/*release | grep ^NAME)"
         echo "Packet Manager : Apt"
         echo "Installings packages for your system..."
         sleep 5
-        apt-get update && apt-get install -y ffmpeg youtube-dl git nodejs  python python-pip python3-pip software-properties-common && sudo add-apt-repository ppa:deadsnakes/ppa && pip3 install -r $req && pip3 install git+https://github.com/pytgcalls/pytgcalls -U
+        apt update -y
+        apt install -y ffmpeg git software-properties-common curl 
+        add-apt-repository ppa:deadsnakes/ppa -y
+        apt install -y python3.10 python3.10-distutils
+        curl https://bootstrap.pypa.io/get-pip.py | python3.10
+        curl -sL https://deb.nodesource.com/setup_17.x | sudo bash -
+        sudo apt-get install -y nodejs
+        python3.10 -m pip install -U $req 
+        python3.10 -m pip install git+https://github.com/pytgcalls/pytgcalls -U
         clear
         echo "All packages installed!"
         sleep 2

@@ -52,7 +52,7 @@ elif cat /etc/*release | grep ^NAME | grep CentOS || cat /etc/*release | grep ^N
         echo "Packet Manager : Yum"
         echo "Installings packages for your system..."
         sleep 5
-        yum -y install python39 python-pip
+        yum -y install python39 python39-pip
         pip3 install -r $req
         printf "\033c"
         echo "All packages installed!"

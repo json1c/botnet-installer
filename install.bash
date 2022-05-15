@@ -66,15 +66,17 @@ elif cat /etc/*release | grep ^NAME | grep CentOS || cat /etc/*release | grep ^N
         sleep 2
         git clone https://github.com/json1c/telegram-raid-botnet.git ~/telegram-raid-botnet
 
-        echo "$yellow Enter commands: $clear"
+        printf "\033c"
+
+        echo -e "$yellow Enter commands: $clear"
         echo ""
         echo "cd telegram-raid-botnet"
         echo "python3.9 main.py"
-        else
-            printf "\033c"
-            echo "Please launch autoinstall with root"
-            exit 1;
-    fi
+    else
+        printf "\033c"
+        echo "Please launch autoinstall with root"
+        exit 1;
+
 elif [[ "$OSTYPE" =~ ^WSL2 ]]; then
     if [[ $(whoami) = 'root' ]]; then
         clear

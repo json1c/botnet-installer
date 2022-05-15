@@ -46,8 +46,7 @@ if  [[ $(uname -o) = 'Android' ]]; then
 fi
 elif cat /etc/*release | grep ^NAME | grep CentOS || cat /etc/*release | grep ^NAME | grep Red || cat /etc/*release | grep ^NAME | grep Fedora; then 
     if [[ $UID = 0 ]]; then
-        alias clear='printf "\033c"'
-        clear
+        printf "\033c"
         echo "Join in our Telegram channels : @huis_bn & @bruhnet"
         echo "Detected OS : $(cat /etc/*release | grep ^NAME)"
         echo "Packet Manager : Yum"
@@ -55,16 +54,16 @@ elif cat /etc/*release | grep ^NAME | grep CentOS || cat /etc/*release | grep ^N
         sleep 5
         yum -y install python39 python-pip
         pip3 install -r $req
-        clear
+        printf "\033c"
         echo "All packages installed!"
         sleep 2
-        clear
+        printf "\033c"
         echo "Starting installing botnet..."
         sleep 2
         cd ~ && git clone https://github.com/json1c/telegram-raid-botnet.git && cd telegram-raid-botnet 
         python main.py
         else
-            clear
+            printf "\033c"
             echo "Please launch autoinstall with root"
             exit 1;
     fi

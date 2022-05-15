@@ -24,7 +24,9 @@ if  [[ $(uname -o) = 'Android' ]]; then
         echo "Join in our Telegram channels : @huis_bn & @bruhnet"
         echo "Detected System : Android (termux)"
         echo "Package manager : pkg"
-        echo "Installings packages for your system..."
+        echo "Installing packages for your system..."
+        echo ""
+        echo "Wait 5-7 minutes..."
         sleep 5
         pkg update && pkg upgrade
         pkg install -y git python 
@@ -33,9 +35,14 @@ if  [[ $(uname -o) = 'Android' ]]; then
         echo "All packages installed!"
         sleep 2 
         clear
-        echo "Starting installing botnet..."
+        echo "Starting botnet installation..."
         sleep 2
-        cd ~ && git clone https://github.com/json1c/telegram-raid-botnet.git && cd telegram-raid-botnet && python main.py
+        git clone https://github.com/json1c/telegram-raid-botnet.git ~/telegram-raid-botnet
+
+        echo "Enter commands:"
+        echo ""
+        echo "cd telegram-raid-botnet"
+        echo "python3.10 main.py"
 fi
 elif cat /etc/*release | grep ^NAME | grep CentOS || cat /etc/*release | grep ^NAME | grep Red || cat /etc/*release | grep ^NAME | grep Fedora; then 
     if [[ $UID = 0 ]]; then

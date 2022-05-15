@@ -151,6 +151,7 @@ elif  cat /etc/*release | grep ^NAME | grep Ubuntu || cat /etc/*release | grep ^
         echo ""
         echo "cd telegram-raid-botnet"
         echo "python3.10 main.py"
+    fi
     else
         clear
         echo "Please launch autoinstall with root"        

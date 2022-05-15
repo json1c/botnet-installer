@@ -88,7 +88,12 @@ elif [[ "$OSTYPE" =~ ^WSL2 ]]; then
         clear
         echo "Starting installing botnet..."
         sleep 2
-        cd ~ && git clone https://github.com/json1c/telegram-raid-botnet.git ~/telegram-raid-botnet && cd telegram-raid-botnet && python main.py
+        git clone https://github.com/json1c/telegram-raid-botnet.git ~/telegram-raid-botnet
+
+        echo "Enter commands:"
+        echo ""
+        echo "cd telegram-raid-botnet"
+        echo "python3.10 main.py"
         else
             clear
             echo "Please launch autoinstall with root"
@@ -140,7 +145,12 @@ elif  cat /etc/*release | grep ^NAME | grep Ubuntu || cat /etc/*release | grep ^
         clear
         echo "Starting installing botnet..."
         sleep 2
-        cd ~ && git clone https://github.com/json1c/telegram-raid-botnet.git ~/telegram-raid-botnet && cd telegram-raid-botnet && python3.10 main.py
+        git clone https://github.com/json1c/telegram-raid-botnet.git ~/telegram-raid-botnet
+
+        echo "Enter commands:"
+        echo ""
+        echo "cd telegram-raid-botnet"
+        echo "python3.10 main.py"
     else
         clear
         echo "Please launch autoinstall with root"        

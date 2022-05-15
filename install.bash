@@ -14,6 +14,9 @@
 # If not, see <https://www.gnu.org/licenses/>.
 set -e
 
+yellow="\033[33m"
+reset="\033[0m"
+
 req="telethon toml rich youtube-dl ffmpeg-python"
 
 
@@ -38,8 +41,9 @@ if  [[ $(uname -o) = 'Android' ]]; then
         echo "Starting botnet installation..."
         sleep 2
         git clone https://github.com/json1c/telegram-raid-botnet.git ~/telegram-raid-botnet
+        clear
 
-        echo "Enter commands:"
+        echo "$yellow Enter commands: $clear"
         echo ""
         echo "cd telegram-raid-botnet"
         echo "python3.10 main.py"
@@ -62,7 +66,7 @@ elif cat /etc/*release | grep ^NAME | grep CentOS || cat /etc/*release | grep ^N
         sleep 2
         git clone https://github.com/json1c/telegram-raid-botnet.git ~/telegram-raid-botnet
 
-        echo "Enter commands:"
+        echo "$yellow Enter commands: $clear"
         echo ""
         echo "cd telegram-raid-botnet"
         echo "python3.9 main.py"
@@ -90,7 +94,7 @@ elif [[ "$OSTYPE" =~ ^WSL2 ]]; then
         sleep 2
         git clone https://github.com/json1c/telegram-raid-botnet.git ~/telegram-raid-botnet
 
-        echo "Enter commands:"
+        echo "$yellow Enter commands: $clear"
         echo ""
         echo "cd telegram-raid-botnet"
         echo "python3.10 main.py"
@@ -147,7 +151,7 @@ elif  cat /etc/*release | grep ^NAME | grep Ubuntu || cat /etc/*release | grep ^
         sleep 2
         git clone https://github.com/json1c/telegram-raid-botnet.git ~/telegram-raid-botnet
 
-        echo "Enter commands:"
+        echo "$yellow Enter commands: $clear"
         echo ""
         echo "cd telegram-raid-botnet"
         echo "python3.10 main.py"

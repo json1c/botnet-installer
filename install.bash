@@ -52,16 +52,20 @@ elif cat /etc/*release | grep ^NAME | grep CentOS || cat /etc/*release | grep ^N
         echo "Packet Manager : Yum"
         echo "Installings packages for your system..."
         sleep 5
-        yum -y install python39 python39-pip
-        pip3 install -r $req
+        yum -y install python39 python39-pip git
+        pip3.9 install -U $req
         printf "\033c"
         echo "All packages installed!"
         sleep 2
         printf "\033c"
         echo "Starting installing botnet..."
         sleep 2
-        cd ~ && git clone https://github.com/json1c/telegram-raid-botnet.git && cd telegram-raid-botnet 
-        python main.py
+        git clone https://github.com/json1c/telegram-raid-botnet.git ~/telegram-raid-botnet
+
+        echo "Enter commands:"
+        echo ""
+        echo "cd telegram-raid-botnet"
+        echo "python3.9 main.py"
         else
             printf "\033c"
             echo "Please launch autoinstall with root"

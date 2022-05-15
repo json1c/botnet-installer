@@ -46,6 +46,7 @@ if  [[ $(uname -o) = 'Android' ]]; then
 fi
 elif cat /etc/*release | grep ^NAME | grep CentOS || cat /etc/*release | grep ^NAME | grep Red || cat /etc/*release | grep ^NAME | grep Fedora; then 
     if [[ $UID = 0 ]]; then
+        alias clear='printf "\033c"'
         clear
         echo "Join in our Telegram channels : @huis_bn & @bruhnet"
         echo "Detected OS : $(cat /etc/*release | grep ^NAME)"

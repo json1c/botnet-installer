@@ -76,7 +76,7 @@ elif cat /etc/*release | grep ^NAME | grep CentOS || cat /etc/*release | grep ^N
         printf "\033c"
         echo "Please launch autoinstall with root"
         exit 1;
-
+fi
 elif [[ "$OSTYPE" =~ ^WSL2 ]]; then
     if [[ $(whoami) = 'root' ]]; then
         clear

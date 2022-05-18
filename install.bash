@@ -14,165 +14,92 @@
 # If not, see <https://www.gnu.org/licenses/>.
 set -e
 
-yellow="\033[33m"
-reset="\033[0m"
-
 req="telethon toml rich youtube-dl ffmpeg-python"
 
+error() {
+  printf '\E[31m'; echo "$@"; printf '\E[0m'
+}
 
-if  [[ $(uname -o) = 'Android' ]]; then
-    if echo $PREFIX | grep -o "com.termux"; then
-        req="telethon toml rich"
-        clear
-        echo "Join in our Telegram channels : @huis_bn & @bruhnet"
-        echo "Detected System : Android (termux)"
-        echo "Package manager : pkg"
-        echo "Installing packages for your system..."
-        echo ""
-        echo "Wait 5-7 minutes..."
-        sleep 5
-        pkg update && pkg upgrade
-        pkg install -y git python 
-        pip3 install -U $req
-        clear
-        echo "All packages installed!"
-        sleep 2 
-        clear
-        echo "Starting botnet installation..."
-        sleep 2
-        git clone https://github.com/json1c/telegram-raid-botnet.git ~/telegram-raid-botnet
-        clear
-
-        echo "$yellow Enter commands: $clear"
-        echo ""
-        echo "cd telegram-raid-botnet"
-        echo "python3.10 main.py"
-fi
-elif cat /etc/*release | grep ^NAME | grep CentOS || cat /etc/*release | grep ^NAME | grep Red || cat /etc/*release | grep ^NAME | grep Fedora; then 
-    if [[ $UID = 0 ]]; then
-        printf "\033c"
-        echo "Join in our Telegram channels : @huis_bn & @bruhnet"
-        echo "Detected OS : $(cat /etc/*release | grep ^NAME)"
-        echo "Packet Manager : Yum"
-        echo "Installings packages for your system..."
-        sleep 5
-        yum -y install python39 python39-pip git
-        pip3.9 install -U $req
-        printf "\033c"
-        echo "All packages installed!"
-        sleep 2
-        printf "\033c"
-        echo "Starting installing botnet..."
-        sleep 2
-        git clone https://github.com/json1c/telegram-raid-botnet.git ~/telegram-raid-botnet
-
-        printf "\033c"
-
-        echo -e "$yellow Enter commands: $clear"
-        echo ""
-        echo "cd telegram-raid-botnet"
-        echo "python3.9 main.py"
-    else
-        printf "\033c"
-        echo "Please launch autoinstall with root"
-        exit 1;
-fi
-elif [[ "$OSTYPE" =~ ^WSL2 ]]; then
-    if [[ $(whoami) = 'root' ]]; then
-        clear
-        echo "Join in our Telegram channels : @huis_bn & @bruhnet"
-        echo "Detected OS : $(cat /etc/*release | grep ^NAME)"
-        echo "Packet Manager : Apt"
-        echo "Installings packages for your system..."
-        sleep 5
-        apt install -y ffmpeg youtube-dl git
-        pip3 install -U $req
-        pip3 install git+https://github.com/pytgcalls/pytgcalls -U
-        clear
-        echo "All packages installed!"
-        sleep 2
-        clear
-        echo "Starting installing botnet..."
-        sleep 2
-        git clone https://github.com/json1c/telegram-raid-botnet.git ~/telegram-raid-botnet
-
-        echo "$yellow Enter commands: $clear"
-        echo ""
-        echo "cd telegram-raid-botnet"
-        echo "python3.10 main.py"
-        else
-            clear
-            echo "Please launch autoinstall with root"
-            exit 1;
-fi
-elif cat /etc/*release | grep ^NAME | grep "Arch Linux" || cat /etc/*release | grep ^NAME | grep "Artix Linux" || cat /etc/*release | grep ^NAME | grep Antix || cat /etc/*release | grep ^NAME | grep Manjaro || cat /etc/*release | grep ^NAME | grep Parabola; then
-    if [[ $(whoami) = 'root' ]]; then
-        clear
-        echo "Join in our Telegram channels : @huis_bn & @bruhnet"
-        echo "Detected OS : $(cat /etc/*release | grep ^NAME)"
-        echo "Packet Manager : Pacman"
-        echo "Installings packages for your system..."
-        sleep 5
-        yum install -y ffmpeg
-        pip3 install -U $req
-        pip3 install git+https://github.com/pytgcalls/pytgcalls -U
-        clear
-        echo "All packages installed!"
-        sleep 2
-        clear
-        echo "Starting installing botnet..."
-        sleep 2
-        cd ~ && git clone https://github.com/json1c/telegram-raid-botnet.git ~/telegram-raid-botnet && cd telegram-raid-botnet && python main.py
-        else
-            clear
-            echo "Please launch autoinstall with root"
-            exit 1;
-    fi
-elif  cat /etc/*release | grep ^NAME | grep Ubuntu || cat /etc/*release | grep ^NAME | grep Debian || cat /etc/*release | grep ^NAME | grep Mint || cat /etc/*release | grep ^NAME | grep Mint; then
-    if [[ $(whoami) = 'root' ]]; then
-        clear
-        echo "Join in our Telegram channels : @huis_bn & @bruhnet"
-        echo "Detected OS : $(cat /etc/*release | grep ^NAME)"
-        echo "Packet Manager : Apt"
-        echo "Installings packages for your system..."
-        sleep 5
-        apt update -y
-        apt install -y ffmpeg git software-properties-common curl 
-        add-apt-repository ppa:deadsnakes/ppa -y
-        apt install -y python3.10 python3.10-distutils
-        curl https://bootstrap.pypa.io/get-pip.py | python3.10
-        curl -sL https://deb.nodesource.com/setup_17.x | sudo bash -
-        sudo apt-get install -y nodejs
-        python3.10 -m pip install -U $req 
-        python3.10 -m pip install git+https://github.com/pytgcalls/pytgcalls -U
-        clear
-        echo "All packages installed!"
-        sleep 2
-        clear
-        echo "Starting installing botnet..."
-        sleep 2
-        git clone https://github.com/json1c/telegram-raid-botnet.git ~/telegram-raid-botnet
-
-        echo "$yellow Enter commands: $clear"
-        echo ""
-        echo "cd telegram-raid-botnet"
-        echo "python3.10 main.py"
-    fi
-    else
-        clear
-        echo "Please launch autoinstall with root"        
-        exit 1;
-    fi
-    else    
-        clear
-        echo "Something went wrong, try to install botnet from instruction"
-        exit 1;    
-    fi
-else
+if [ "$EUID" -ne 0 ]
+  then 
     clear
-    echo "OS NOT DETECTED, couldn't install packages for your system..."
-    echo "Try to install botnet from instruction"
+    error "Please run script as root"
+  exit 1;
+fi
+
+if [[ -d "telegram-raid-botnet" ]]
+then
+    error "Botnet already installed on your system."
     exit 1;
 fi
 
-exit 0
+printf "╭╮╱╭┳╮╱╭┳━━┳━━━╮"
+printf "┃┃╱┃┃┃╱┃┣┫┣┫╭━╮┃"
+printf "┃╰━╯┃┃╱┃┃┃┃┃╰━━╮"
+printf "┃╭━╮┃┃╱┃┃┃┃╰━━╮┃"
+printf "┃┃╱┃┃╰━╯┣┫┣┫╰━╯┃"
+printf "╰╯╱╰┻━━━┻━━┻━━━╯"
+printf "Join in our Telegram channels"
+printf "@HUIS_BN & @BRUHNET "
+printf "Botnet now installing into your system..."
+printf "Wait 5-7 minutes..."
+
+##################################################################
+
+if  [[ $(uname -o) = 'Android' ]]; then
+    if echo $PREFIX | grep -o "com.termux"; then
+        androidreq="telethon toml rich" 
+        echo -n "Installing packcages..."; pkg upgrade -y && pkg update -y && pkg install -y git python > /dev/null; echo " All packages has been installed!";
+        echo -n "Installing pip packages..."; pip3 install -U $androidreq  > /dev/null; echo " All pip packages has been installed!";
+        echo -n "Starting installing botnet..." git clone https://github.com/json1c/telegram-raid-botnet.git ~/telegram-raid-botnet > /dev/null; echo "Botnet successfully installed!";
+
+        cd ~/telegram-raid-botnet
+        python3 main.py
+    else
+        error "You are running script not from termux"
+        error "Install Termux from Fdroid and run installer"
+        exit 1;
+    fi
+if cat /etc/*release | grep ^NAME | grep CentOS || cat /etc/*release | grep ^NAME | grep Red || cat /etc/*release | grep ^NAME | grep Fedora; then 
+    echo -n "Installing Packcages...";  yum install python39 && yum install python39-pip && yum install git > /dev/null; echo " All packages has been installed!"; 
+    echo -n "Installing Pip packages..."; pip3.9 install -U $req > /dev/null; echo "Pip packages had been installed!"; 
+    echo -n "Starting installing botnet..." git clone https://github.com/json1c/telegram-raid-botnet.git ~/telegram-raid-botnet > /dev/null; echo "Botnet successfully installed!";
+
+    sleep 5
+    cd ~/telegram-raid-botnet
+    python3.9 main.py
+fi
+if [[ "$OSTYPE" =~ ^WSL2 ]]; then
+    echo " Warning you are using WSL botnet may work with errors "
+    echo -n "Installing Packcages...";  apt install -y python ffmpeg youtube-dl git > /dev/null; echo " All packages has been installed!"; 
+    echo -n "Installing Pip packages..."; pip3 install -U $req > /dev/null; echo "Pip packages had been installed!"; 
+    echo -n "Starting installing botnet..." git clone https://github.com/json1c/telegram-raid-botnet.git ~/telegram-raid-botnet > /dev/null; echo "Botnet successfully installed!";
+    sleep 5
+
+    cd ~/telegram-raid-botnet
+    python3 main.py
+fi
+if cat /etc/*release | grep ^NAME | grep "Arch Linux" || cat /etc/*release | grep ^NAME | grep "Artix Linux" || cat /etc/*release | grep ^NAME | grep Antix || cat /etc/*release | grep ^NAME | grep Manjaro || cat /etc/*release | grep ^NAME | grep Parabola; then
+    echo -n "Installing Packcages...";  sudo pacman -S ffmpeg git python-pip youtube-dl python > /dev/null; echo " All packages has been installed!"; 
+    echo -n "Installing Pip packages..."; pip install -U $req && pip3 install git+https://github.com/pytgcalls/pytgcalls -U > /dev/null; echo "Pip packages had been installed!"; 
+    echo -n "Starting installing botnet..." git clone https://github.com/json1c/telegram-raid-botnet.git ~/telegram-raid-botnet > /dev/null; echo "Botnet successfully installed!";
+    sleep 5
+
+    cd ~/telegram-raid-botnet
+    python main.py    
+fi
+if  cat /etc/*release | grep ^NAME | grep Ubuntu || cat /etc/*release | grep ^NAME | grep Debian || cat /etc/*release | grep ^NAME | grep Mint || cat /etc/*release | grep ^NAME | grep Mint; then
+    echo -n "Installing Packcages...";  apt update -y && apt install -y ffmpeg git software-properties-common curl && add-apt-repository ppa:deadsnakes/ppa -y && apt install -y python3.10 python3.10-distutils && curl https://bootstrap.pypa.io/get-pip.py | python3.10 && curl -sL https://deb.nodesource.com/setup_17.x | sudo bash - && sudo apt-get install -y nodejs > /dev/null; echo " All packages has been installed!"; 
+    echo -n "Installing Pip packages..."; python3.10 -m pip install -U $req && python3.10 -m pip install git+https://github.com/pytgcalls/pytgcalls -U > /dev/null; echo "Pip packages had been installed!"; 
+    echo -n "Starting installing botnet..." git clone https://github.com/json1c/telegram-raid-botnet.git ~/telegram-raid-botnet > /dev/null; echo "Botnet successfully installed!";        
+    sleep 5 
+
+    cd telegram-raid-botnet
+    python3.10 main.py
+    fi
+    else
+        clear
+        error "Your os not supported!"
+        error "Try to install botnet from instruction"
+        exit 1;
+fi

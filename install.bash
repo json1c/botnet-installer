@@ -48,17 +48,18 @@ printf "Wait 5-7 minutes..."
 
 if  [[ $(uname -o) = 'Android' ]]; then
     if echo $PREFIX | grep -o "com.termux"; then
-        androidreq="telethon toml rich" 
-        echo -n "Installing packcages..."; pkg upgrade -y && pkg update -y && pkg install -y git python > /dev/null; echo " All packages has been installed!";
-        echo -n "Installing pip packages..."; pip3 install -U $androidreq  > /dev/null; echo " All pip packages has been installed!";
-        echo -n "Starting installing botnet..." git clone https://github.com/json1c/telegram-raid-botnet.git ~/telegram-raid-botnet > /dev/null; echo "Botnet successfully installed!";
+        if [[ $EUID -eq 0 ]]; then
+            androidreq="telethon toml rich" 
+            echo -n "Installing packcages..."; pkg upgrade -y && pkg update -y && pkg install -y git python > /dev/null; echo " All packages has been installed!";
+            echo -n "Installing pip packages..."; pip3 install -U $androidreq  > /dev/null; echo " All pip packages has been installed!";
+            echo -n "Starting installing botnet..." git clone https://github.com/json1c/telegram-raid-botnet.git ~/telegram-raid-botnet > /dev/null; echo "Botnet successfully installed!";
 
-        cd ~/telegram-raid-botnet
-        python3 main.py
-    else
-        error "You are running script not from termux"
-        error "Install Termux from Fdroid and run installer"
-        exit 1;
+            cd ~/telegram-raid-botnet
+            python3 main.py
+        else
+            error "You are running script not from termux"
+            error "Install Termux from Fdroid and run installer"
+            exit 1;
     fi
 if cat /etc/*release | grep ^NAME | grep CentOS || cat /etc/*release | grep ^NAME | grep Red || cat /etc/*release | grep ^NAME | grep Fedora; then 
     echo -n "Installing Packcages...";  yum install python39 && yum install python39-pip && yum install git > /dev/null; echo " All packages has been installed!"; 
@@ -96,7 +97,12 @@ if  cat /etc/*release | grep ^NAME | grep Ubuntu || cat /etc/*release | grep ^NA
 
     cd telegram-raid-botnet
     python3.10 main.py
-    fi
+    fi  
+else 
+    error "Something went wrong."
+    error "Try to install botnet from instruction."
+    exit 1;
+fi
     else
         clear
         error "Your os not supported!"

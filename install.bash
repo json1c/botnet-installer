@@ -27,7 +27,7 @@ if [ "$EUID" -ne 0 ]
   exit 1;
 fi
 
-if [[ -d "telegram-raid-botnet" ]]
+if [[ ! -d "telegram-raid-botnet" ]]
 then
     error "Botnet already installed on your system."
     exit 1;
@@ -61,6 +61,7 @@ if  [[ $(uname -o) = 'Android' ]]; then
             error "Install Termux from Fdroid and run installer"
             exit 1;
     fi
+fi
 if cat /etc/*release | grep ^NAME | grep CentOS || cat /etc/*release | grep ^NAME | grep Red || cat /etc/*release | grep ^NAME | grep Fedora; then 
     echo -n "Installing Packcages...";  yum install python39 && yum install python39-pip && yum install git &>/dev/null; echo " All packages has been installed!"; 
     echo -n "Installing Pip packages..."; pip3.9 install -U $req &>/dev/null; echo "Pip packages had been installed!"; 
@@ -102,10 +103,4 @@ else
     error "Something went wrong."
     error "Try to install botnet from instruction."
     exit 1;
-fi
-    else
-        clear
-        error "Your os not supported!"
-        error "Try to install botnet from instruction"
-        exit 1;
 fi

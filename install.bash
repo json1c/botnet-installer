@@ -79,7 +79,7 @@ if [[ $(uname -o) = 'Android' ]]; then
             cd ~/telegram-raid-botnet
             succes "[*] All ok"
             echo "[*] Installing packcages..."
-            pkg update -y && pkg upgrade -y && pkg install -y git python &>/dev/null
+            pkg update -y &>/dev/null && pkg upgrade -y &>/dev/null && pkg install -y git python &>/dev/null
             succes "[*] All packages has been installed!"
             echo "[*] Installing pip packages..."
             pip3 install -r requirements.txt  &>/dev/null
@@ -121,20 +121,37 @@ elif echo "$OSTYPE" | grep -qE '^linux-gnu.*' && [ -f '/etc/arch-release' ]; the
     succes "[*] Starting botnet..." && python3 main.py  
 elif echo "$OSTYPE" | grep -qE '^linux-gnu.*' && [ -f '/etc/debian_version' ]; then
     errorCode=$?
-    echo "[*] Clonning botnet from git..."
-    git clone https://github.com/json1c/telegram-raid-botnet.git ~/telegram-raid-botnet &>/dev/null
-    succes "[*] Botnet clonned into your system!"
-    echo "[*] Entering to botnet directory..."
-    cd ~/telegram-raid-botnet
-    succes "[*] All ok"
-    echo "[*] Installing packcages..."
-    sudo apt update  &>/dev/null && sudo apt install -y ffmpeg git software-properties-common curl &>/dev/null && sudo add-apt-repository ppa:deadsnakes/ppa -y && sudo apt install -y python3.10 python3.10-distutils && curl https://bootstrap.pypa.io/get-pip.py | python3.10 && curl -sL https://deb.nodesource.com/setup_17.x | sudo bash - && sudo apt-get install -y nodejs &>/dev/null
-    succes "[*] All packages has been installed!"
-    echo "[*] Installing pip packages..."
-    python3.10 -m pip install -r requirements.txt  &>/dev/null && python3.10 -m pip install git+https://github.com/pytgcalls/pytgcalls -U &>/dev/null
-    succes "[*] All pip packages has been installed!"
+    warning '[Warning]: Botnet on Debian based distros requires python 3.10 !'
+    read -r '[?] Install python 3.10? (y/n): ' pythoninstall
+        if [ "${pythoninstall}" == 'y' ]; then
+        echo "[*] Installing important packages..."
+        sudo apt install software-properties-common curl -y &>/dev/null 
+        succes "[*] Installed!"
+        echo "[*] Installing repo for python 3.10..."
+        sudo add-apt-repository ppa:deadsnakes/ppa -y &>/dev/null
+        succes "[*] Installed!"
+        echo "[*] Installing python 3.10"
+        sudo apt install -y python3.10 python3.10-distutils &>/dev/null && curl https://bootstrap.pypa.io/get-pip.py | python3.10 &>/dev/null 
+        echo "[*] Installed!"
+            else
+                clear
+                warning '[*] User Aborted python 3.10 Installation.'
+                exit 1;
+        fi
+        echo "[*] Clonning botnet from git..."
+        git clone https://github.com/json1c/telegram-raid-botnet.git ~/telegram-raid-botnet &>/dev/null
+        succes "[*] Botnet clonned into your system!"
+        echo "[*] Entering to botnet directory..."
+        cd ~/telegram-raid-botnet
+        succes "[*] All ok"
+        echo "[*] Installing packcages..."
+        sudo apt update  &>/dev/null && sudo apt install -y ffmpeg git &>/dev/null && curl -sL https://deb.nodesource.com/setup_17.x | sudo bash - && sudo apt-get install -y nodejs &>/dev/null
+        succes "[*] All packages has been installed!"
+        echo "[*] Installing pip packages..."
+        python3.10 -m pip install -r requirements.txt &>/dev/null && python3.10 -m pip install git+https://github.com/pytgcalls/pytgcalls -U &>/dev/null
+        succes "[*] All pip packages has been installed!"
 
-    succes "[*] Starting botnet..." && python3.10 main.py
+        succes "[*] Starting botnet..." && python3.10 main.py
 else 
     error "[!] An error accurated"
     error "[*] Try to install botnet from instruction."

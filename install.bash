@@ -47,16 +47,18 @@ if [ "$dir_detected" = "yes" ]; then
 	cd ..
 fi
 
-if [ -d "telegram-raid-botnet" ]; then
-    cd telegram-raid-botnet || {
+if [ -d ~/"telegram-raid-botnet" ]; then
+    cd ~/telegram-raid-botnet || {
         warning "[*] Botnet dir detected..."
         time_sleep
         mkdir ~/old-botnet
         mv ~/telegram-raid-botnet ~/old-botnet 
-        warning "[*] Previous botnet has moved to ~/old-botnet"
+        warning "[*] Previous botnet was moved to ~/old-botnet"
     }
     dir_detected="yes"
-fi
+else
+    succes "[*] Botnet dir not detected"
+    fi
 
 #shit banner
 cat << "EOF" 
@@ -66,16 +68,16 @@ cat << "EOF"
 ┃╭━╮┃┃╱┃┃┃┃╰━━╮┃
 ┃┃╱┃┃╰━╯┣┫┣┫╰━╯┃
 ╰╯╱╰┻━━━┻━━┻━━━╯ 
-[*] Botnet now installing into your system...
-[*] Wait 5-7 minutes...
 EOF
+warning "[*] Botnet now installing into your system..."
+warning "[*] Wait 5-7 minutes..."
 
 ##################################################################
 
 #andoid detect 
 if [[ $(uname -o) = 'Android' ]]; then
     if echo "$PREFIX" | grep -o "com.termux"; then
-            errorCode=$?
+        errorCode=$?
             echo "[*] Clonning botnet from git..."
             git clone https://github.com/json1c/telegram-raid-botnet.git ~/telegram-raid-botnet &>/dev/null
             succes "[*] Botnet clonned into your system!"
@@ -91,7 +93,7 @@ if [[ $(uname -o) = 'Android' ]]; then
 
             succes "[*] Starting botnet..." && python3 main.py
 elif [[ "$OSTYPE" =~ ^WSL2 ]]; then
-    errorCode=$?
+errorCode=$?
     warning "[*] You are running script from WSL2, some botnet functions dont work on this platform"
     echo "[*] Clonning botnet from git..."
     git clone https://github.com/json1c/telegram-raid-botnet.git ~/telegram-raid-botnet &>/dev/null
@@ -108,7 +110,7 @@ elif [[ "$OSTYPE" =~ ^WSL2 ]]; then
 
     succes "[*] Starting botnet..." && python3 main.py
 elif echo "$OSTYPE" | grep -qE '^linux-gnu.*' && [ -f '/etc/arch-release' ]; then
-    errorCode=$?
+errorCode=$?
     echo "[*] Clonning botnet from git..."
     git clone https://github.com/json1c/telegram-raid-botnet.git ~/telegram-raid-botnet &>/dev/null
     succes "[*] Botnet clonned into your system!"
@@ -124,7 +126,7 @@ elif echo "$OSTYPE" | grep -qE '^linux-gnu.*' && [ -f '/etc/arch-release' ]; the
 
     succes "[*] Starting botnet..." && python3 main.py  
 elif echo "$OSTYPE" | grep -qE '^linux-gnu.*' && [ -f '/etc/debian_version' ]; then
-    errorCode=$?
+errorCode=$?
     warning '[Warning]: Botnet on Debian based distros requires python 3.10 !'
     read -r '[?] Install python 3.10? (y/n): ' pythoninstall
         if [ "${pythoninstall}" == 'y' ]; then

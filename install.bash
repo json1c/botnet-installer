@@ -43,16 +43,20 @@ else
     exit 1;
 fi
 
-if [ -d "telegram-raid-botnet" ]; then
-    warning "[*] Botnet dir detected..."
-    time_sleep
-    mkdir ~/old-botnet
-    mv ~/telegram-raid-botnet ~/old-botnet 
-    warning "[*] Previous botnet has moved to ~/old-botnet"
-else
-    succes "[*] Botnet not installed into your system..." 
+if [ "$dir_detected" = "yes" ]; then
+	cd ..
 fi
 
+if [ -d "telegram-raid-botnet" ]; then
+    cd telegram-raid-botnet || {
+        warning "[*] Botnet dir detected..."
+        time_sleep
+        mkdir ~/old-botnet
+        mv ~/telegram-raid-botnet ~/old-botnet 
+        warning "[*] Previous botnet has moved to ~/old-botnet"
+    }
+    dir_detected="yes"
+fi
 
 #shit banner
 cat << "EOF" 

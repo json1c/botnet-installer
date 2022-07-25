@@ -47,7 +47,7 @@ if [ "$dir_detected" = "yes" ]; then
 	cd ..
 fi
 
-if [ -d ~/"telegram-raid-botnet" ]; then
+if [ -d "$HOME"/telegram-raid-botnet ]; then
     cd ~/telegram-raid-botnet || {
         warning "[*] Botnet dir detected..."
         time_sleep

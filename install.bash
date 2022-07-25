@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # https://github.com/json1c
-# Copyright (C) 2021  json1c
+# Copyright (C) 2022  json1c
 
 # This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License
 # as published by the Free Software Foundation, either version 3 of the License
@@ -27,20 +27,32 @@ error() {
   printf '\E[31m'; echo "$@"; printf '\E[0m'
 }
 
-if [ "$EUID" -ne 0 ] || [[ "$OSTYPE" == "linux-gnu"* ]]; then 
+time_sleep() {
+  sleep 5
+}
+
+if command -v termux-setup-storage; then
+    echo "[*] Termux detected..." && echo "[*] Root not required..."
+elif [ "$EUID" -ne 0 ] || [[ "$OSTYPE" == "linux-gnu"* ]]; then 
     echo "[*] Linux detected..."
     error "[!] Run script from root user!"
     exit 1;
-elif command -v termux-setup-storage; then
-    echo "[*] Termux detected..." && echo "[*] Root dont required..."
-fi
-
-if [[ -d "telegram-raid-botnet" ]]; then
-    cd ~/telegram-raid-botnet
-else
-    error "[!] Botnet already installed into your system." 
+else 
+    error "[*] An unexpected error has occurred"
+    warning "[*] Try to install botnet from instruction"
     exit 1;
 fi
+
+if [ -d "telegram-raid-botnet" ]; then
+    warning "[*] Botnet dir detected..."
+    time_sleep
+    mkdir ~/old-botnet
+    mv ~/telegram-raid-botnet ~/old-botnet 
+    warning "[*] Previous botnet has moved to ~/old-botnet"
+else
+    succes "[*] Botnet not installed into your system..." 
+fi
+
 
 #shit banner
 cat << "EOF" 
@@ -57,12 +69,12 @@ EOF
 ##################################################################
 
 #andoid detect 
-if  [[ $(uname -o) = 'Android' ]]; then
-    if echo $PREFIX | grep -o "com.termux"; then
+if [[ $(uname -o) = 'Android' ]]; then
+    if echo "$PREFIX" | grep -o "com.termux"; then
             errorCode=$?
             echo "[*] Clonning botnet from git..."
             git clone https://github.com/json1c/telegram-raid-botnet.git ~/telegram-raid-botnet &>/dev/null
-            succes "[*] Botnet has been setuped!"
+            succes "[*] Botnet clonned into your system!"
             echo "[*] Entering to botnet directory..."
             cd ~/telegram-raid-botnet
             succes "[*] All ok"
@@ -73,18 +85,13 @@ if  [[ $(uname -o) = 'Android' ]]; then
             pip3 install -r requirements.txt  &>/dev/null
             succes "[*] All pip packages has been installed!"
 
-            python3 main.py
-        else
-            warning "[*] You are running script not from termux"
-            error "[!] Install Termux from Fdroid and run installer again"
-            exit 1;
-    fi
-if [[ "$OSTYPE" =~ ^WSL2 ]]; then
+            succes "[*] Starting botnet..." && python3 main.py
+elif [[ "$OSTYPE" =~ ^WSL2 ]]; then
     errorCode=$?
     warning "[*] You are running script from WSL2, some botnet functions dont work on this platform"
     echo "[*] Clonning botnet from git..."
     git clone https://github.com/json1c/telegram-raid-botnet.git ~/telegram-raid-botnet &>/dev/null
-    succes "[*] Botnet has been setuped!"
+    succes "[*] Botnet clonned into your system!"
     echo "[*] Entering to botnet directory..."
     cd ~/telegram-raid-botnet
     succes "[*] All ok"
@@ -95,13 +102,12 @@ if [[ "$OSTYPE" =~ ^WSL2 ]]; then
     pip3 install -r requirements.txt  &>/dev/null
     succes "[*] All pip packages has been installed!"
 
-    python3 main.py
-fi
-if echo "$OSTYPE" | grep -qE '^linux-gnu.*' && [ -f '/etc/arch-release' ]; then
+    succes "[*] Starting botnet..." && python3 main.py
+elif echo "$OSTYPE" | grep -qE '^linux-gnu.*' && [ -f '/etc/arch-release' ]; then
     errorCode=$?
     echo "[*] Clonning botnet from git..."
     git clone https://github.com/json1c/telegram-raid-botnet.git ~/telegram-raid-botnet &>/dev/null
-    succes "[*] Botnet has been setuped!"
+    succes "[*] Botnet clonned into your system!"
     echo "[*] Entering to botnet directory..."
     cd ~/telegram-raid-botnet
     succes "[*] All ok"
@@ -112,13 +118,12 @@ if echo "$OSTYPE" | grep -qE '^linux-gnu.*' && [ -f '/etc/arch-release' ]; then
     pip3 install -r requirements.txt  &>/dev/null && pip3 install git+https://github.com/pytgcalls/pytgcalls -U &>/dev/null
     succes "[*] All pip packages has been installed!"
 
-    python main.py    
-fi
-if echo "$OSTYPE" | grep -qE '^linux-gnu.*' && [ -f '/etc/debian_version' ]; then
+    succes "[*] Starting botnet..." && python3 main.py  
+elif echo "$OSTYPE" | grep -qE '^linux-gnu.*' && [ -f '/etc/debian_version' ]; then
     errorCode=$?
     echo "[*] Clonning botnet from git..."
     git clone https://github.com/json1c/telegram-raid-botnet.git ~/telegram-raid-botnet &>/dev/null
-    succes "[*] Botnet has been setuped!"
+    succes "[*] Botnet clonned into your system!"
     echo "[*] Entering to botnet directory..."
     cd ~/telegram-raid-botnet
     succes "[*] All ok"
@@ -129,21 +134,21 @@ if echo "$OSTYPE" | grep -qE '^linux-gnu.*' && [ -f '/etc/debian_version' ]; the
     python3.10 -m pip install -r requirements.txt  &>/dev/null && python3.10 -m pip install git+https://github.com/pytgcalls/pytgcalls -U &>/dev/null
     succes "[*] All pip packages has been installed!"
 
-    python3.10 main.py
-    fi  
-if [ $errorCode -ne 0 ]; then
-  error "[!] An error accurated"
-  error "[*] Try to install botnet from instruction."
-  clear 
-  sleep 2 
-  succes "[*] Exiting from installer..."
-  exit $errorCode
-fi
+    succes "[*] Starting botnet..." && python3.10 main.py
 else 
     error "[!] An error accurated"
     error "[*] Try to install botnet from instruction."
     clear 
-    sleep 2 
+    sleep_time
     succes "[*] Exiting from installer..."
     exit 1;
+    fi
+fi
+if [ $errorCode -ne 0 ]; then
+  error "[!] An error accurated"
+  error "[*] Try to install botnet from instruction."
+  clear 
+  sleep_time
+  succes "[*] Exiting from installer..."
+  exit $errorCode
 fi

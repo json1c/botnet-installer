@@ -64,10 +64,6 @@ elif [ "$EUID" -ne 0 ] && [[ "$OSTYPE" == "linux-gnu"* ]]; then
     echo "[*] Linux detected..."
     error "[!] Run script from root user!"
     exit 1;
-else 
-    error "[!] An unexpected error has occurred"
-    warning "[*] Try to install botnet from instruction | https://teletype.in/@lkqas/telegram-raid-botnet"
-    exit 1;
 fi
 
 if [ "$dir_detected" = "yes" ]; then

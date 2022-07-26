@@ -60,7 +60,7 @@ time_sleep() {
 
 if command -v termux-setup-storage &>/dev/null; then
     success "[*] Termux detected..." && success "[*] Root not required..."
-elif [ "$EUID" -ne 0 ] || [[ "$OSTYPE" == "linux-gnu"* ]]; then 
+elif [ "$EUID" -ne 0 ] && [[ "$OSTYPE" == "linux-gnu"* ]]; then 
     echo "[*] Linux detected..."
     error "[!] Run script from root user!"
     exit 1;

@@ -197,7 +197,7 @@ errorCode=$?
     success "[*] All pip packages has been installed!"
 
     success "[*] Starting botnet..." && python3 main.py  
-elif echo "$OSTYPE" | grep -qE '^linux-gnu.*' && [ -f '/etc/debian_version' ]; then
+elif echo "$OSTYPE" | grep '^linux-gnu.*' && [ -f '/etc/debian_version' ]; then
 errorCode=$?
     warning '[Warning]: Botnet on Debian based distros requires python 3.10 !'
     read -r '[?] Install python 3.10? (y/n): ' pythoninstall

@@ -152,13 +152,13 @@ if [[ $(uname -o) = 'Android' ]]; then
         errorCode=$?
             echo "[*] Installing packcages..."
             pkg update -y &>/dev/null && pkg upgrade -y &>/dev/null && pkg install -y git python &>/dev/null 
+            success "[*] All packages has been installed!"
             echo "[*] Clonning botnet from git..."
             git clone https://github.com/json1c/telegram-raid-botnet.git ~/telegram-raid-botnet &>/dev/null 
             success "[*] Botnet clonned into your system!"
             echo "[*] Entering to botnet directory..."
             cd ~/telegram-raid-botnet
             success "[*] All ok"
-            success "[*] All packages has been installed!"
             echo "[*] Installing pip packages..."
             pip3 install -r requirements.txt  &>/dev/null
             success "[*] All pip packages has been installed!"

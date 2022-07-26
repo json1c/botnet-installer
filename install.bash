@@ -14,9 +14,6 @@
 # If not, see <https://www.gnu.org/licenses/>.
 set -e
 
-#variables
-COMMIT=$(git show-branch --no-name HEAD)
-
 #some text bruh
 warning() {
   printf '\e[36m'; echo "$@"; printf '\E[0m'
@@ -32,6 +29,7 @@ error() {
 
 last_commit() {
 if [ -d .git ]; then
+  COMMIT=$(git show-branch --no-name HEAD)
   success "[*] Last commit is: $COMMIT";
 else
   git rev-parse --git-dir 2> /dev/null;

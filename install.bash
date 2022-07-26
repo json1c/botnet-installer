@@ -32,7 +32,7 @@ if [ -d .git ]; then
   COMMIT=$(git show-branch --no-name HEAD)
   success "[*] Last commit is: $COMMIT";
 else
-  return 1
+  warning "[*] .git dir not detected"
 fi
 }
 

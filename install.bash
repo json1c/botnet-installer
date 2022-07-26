@@ -32,7 +32,7 @@ if [ -d .git ]; then
   COMMIT=$(git show-branch --no-name HEAD)
   success "[*] Last commit is: $COMMIT";
 else
-  git rev-parse --git-dir 2> /dev/null;
+  return 1
 fi
 }
 

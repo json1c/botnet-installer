@@ -126,6 +126,7 @@ done
 }
 
 #shit banner
+last_commit
 cat << "EOF" 
  _   _ _   _ ___ ____        ____  _   _
 | | | | | | |_ _/ ___|      | __ )| \ | | telegram @huis_bn
@@ -133,7 +134,6 @@ cat << "EOF"
 |  _  | |_| || | ___) |_____| |_) | |\  | 
 |_| |_|\___/|___|____/      |____/|_| \_|
 EOF
-last_commit spinner
 choice_msg
 os_print
 warning "[*] Botnet now installing into your system..." 

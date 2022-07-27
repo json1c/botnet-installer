@@ -148,13 +148,13 @@ answer=$( while ! head -c 1 | grep -i '[ny]' ;do true ;done )
 stty "$old_stty_cfg"
 if echo "$answer" | grep -iq "^y" ;then
     echo "[*] Installing important packages..."
-    sudo apt install software-properties-common curl -y &>/dev/null 
+    sudo apt install software-properties-common curl git -y &>/dev/null 
     success "[*] Installed!"
     echo "[*] Installing repo for python 3.10..."
     sudo add-apt-repository ppa:deadsnakes/ppa -y &>/dev/null
     success "[*] Installed!"
     echo "[*] Installing python 3.10"
-    sudo apt install -y python3.10 python3.10-distutils &>/dev/null && curl https://bootstrap.pypa.io/get-pip.py | python3.10 &>/dev/null 
+    sudo apt install -y python3.10 python3.10-distutils &>/dev/null && curl https://bootstrap.pypa.io/get-pip.py | python3.10 &>/dev/null
     echo "[*] Installed!"
 else
     clear
@@ -193,7 +193,7 @@ warning "[*] Wait 5-7 minutes..."
 time_sleep
 
 
-##################################################################
+###################   DEBIAN BASE DISTROS  ###############################################
 
 if [ -f '/etc/debian_version' ]; then
         ubuntu_python
@@ -201,17 +201,24 @@ if [ -f '/etc/debian_version' ]; then
         git clone https://github.com/json1c/telegram-raid-botnet.git ~/telegram-raid-botnet &>/dev/null
         success "[*] Botnet clonned into your system!"
         echo "[*] Entering to botnet directory..."
-        cd ~/telegram-raid-botnet
+        cd ~/telegram-raid-botnet &>/dev/null
         success "[*] All ok"
         echo "[*] Installing packcages..."
-        sudo apt update  &>/dev/null && sudo apt install -y ffmpeg git &>/dev/null && curl -sL https://deb.nodesource.com/setup_17.x | sudo bash - && sudo apt-get install -y nodejs &>/dev/null
+        sudo apt update  &>/dev/null && sudo apt install -y ffmpeg git &>/dev/null && curl -sL https://deb.nodesource.com/setup_17.x | sudo bash - &>/dev/null && sudo apt-get install -y nodejs &>/dev/null
         success "[*] All packages has been installed!"
         echo "[*] Installing pip packages..."
         python3.10 -m pip install -r requirements.txt &>/dev/null && python3.10 -m pip install git+https://github.com/pytgcalls/pytgcalls -U &>/dev/null
         success "[*] All pip packages has been installed!"
 
         success "[*] Starting botnet..." && python3.10 main.py
-elif [[ "$OSTYPE" =~ ^WSL2 ]]; then
+else 
+    script_exit_msg
+    exit 1;
+fi
+
+######################   WSL2   #####################################################
+
+if [[ "$OSTYPE" =~ ^WSL2 ]]; then
     warning "[*] You are running script from WSL2, some botnet functions dont work on this platform"
     echo "[*] Clonning botnet from git..."
     git clone https://github.com/json1c/telegram-raid-botnet.git ~/telegram-raid-botnet &>/dev/null
@@ -227,7 +234,14 @@ elif [[ "$OSTYPE" =~ ^WSL2 ]]; then
     success "[*] All pip packages has been installed!"
 
     success "[*] Starting botnet..." && python3 main.py
-elif [ -f '/etc/arch-release' ]; then
+else 
+    script_exit_msg
+    exit 1;
+fi
+
+#########################  ARCH LINUX BASED DISTROS  ##################################################
+
+if [ -f '/etc/arch-release' ]; then
     ubuntu_python
     echo "[*] Clonning botnet from git..."
     git clone https://github.com/json1c/telegram-raid-botnet.git ~/telegram-raid-botnet &>/dev/null

@@ -157,7 +157,7 @@ termux_install() {
 
 ubuntu_python() {
 warning '[Warning]: Botnet on Debian based distros requires python 3.10 !'
-echo '[?] Install python 3.10? (y/n) : '
+warning '[ ? ] Install python 3.10? (y/n) : '
 old_stty_cfg=$(stty -g)
 stty raw -echo
 answer=$( while ! head -c 1 | grep -i '[ny]' ;do true ;done )

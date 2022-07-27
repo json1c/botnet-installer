@@ -12,9 +12,7 @@
 
 # You should have received a copy of the GNU General Public License along with this program.
 # If not, see <https://www.gnu.org/licenses/>.
-set -e
-
-Blue='\033[0;34m'         
+set -e       
 
 #some text bruh
 warning() {
@@ -182,7 +180,7 @@ fi
 }
 
 function choice_msg() {
-PS3='${Blue}[ BotnetInstaller ] Please enter your choice : '
+PS3='[ BotnetInstaller ] Please enter your choice : '
 options=("Install botnet" "Update botnet" "exit")
 select opt in "${options[@]}"
 do

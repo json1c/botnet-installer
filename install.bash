@@ -71,22 +71,22 @@ if [ "$dir_detected" = "yes" ]; then
 fi
 
 dir_not_found() {
-warning '[Warning]: Script not detected botnet into your system !'
-echo '[?] Install botnet to your home dir? (y/n) : '
-old_stty_cfg=$(stty -g)
-stty raw -echo
-answer=$( while ! head -c 1 | grep -i '[ny]' ;do true ;done )
-stty "$old_stty_cfg"
-if echo "$answer" | grep -iq "^y" ;then
-        echo "[*] Installing botnet..."
-        git clone https://github.com/json1c/telegram-raid-botnet.git ~/telegram-raid-botnet &>/dev/null 
-        success "[*] Installed!"
-        success "[*] Please, restart script"
-        exit 1;
-    else 
-        error "[*] User aborted installation"
-        exit 1;
-    fi
+    warning '[Warning]: Script not detected botnet into your system !'
+    echo '[?] Install botnet to your home dir? (y/n) : '
+    old_stty_cfg=$(stty -g)
+    stty raw -echo
+    answer=$( while ! head -c 1 | grep -i '[ny]' ;do true ;done )
+    stty "$old_stty_cfg"
+        if echo "$answer" | grep -iq "^y" ;then
+            echo "[*] Installing botnet..."
+            git clone https://github.com/json1c/telegram-raid-botnet.git ~/telegram-raid-botnet &>/dev/null 
+            success "[*] Installed!"
+            success "[*] Please, restart script"
+            exit 1;
+        else 
+            error "[*] User aborted installation"
+            exit 1;
+fi
 }
 
 if [ -d "$HOME/telegram-raid-botnet" ]; then
@@ -95,7 +95,7 @@ if [ -d "$HOME/telegram-raid-botnet" ]; then
         warning "[*] Botnet dir detected..."
         time_sleep
         mkdir "$HOME/old-botnet"
-        mv "$HOME/telegram-raid-botnet" "$HOME/old-botnet" 
+        mv "$HOME/telegram-raid-botnet" "$HOME/old-botnet" || error "[*] Dir ~/old-botnet is exist!"
         warning "[*] Previous botnet was moved to ~/old-botnet"
     }
     dir_detected="yes"
@@ -109,7 +109,7 @@ if [ -d "$HOME/telegram-raid-botnet" ]; then
     {   
         cd "$HOME/telegram-raid-botnet"
         warning "[*] Botnet dir detected..."
-        git pull &>/dev/null
+        git pull &>/dev/null || error "[~] An error accurated when user tryed to update botnet"; choice_msg;
         warning "[*] Succefully updated!"
     }
         else
@@ -154,7 +154,7 @@ if echo "$answer" | grep -iq "^y" ;then
     sudo add-apt-repository ppa:deadsnakes/ppa -y &>/dev/null
     success "[*] Installed!"
     echo "[*] Installing python 3.10"
-    sudo apt install -y python3.10 python3.10-distutils &>/dev/null && curl https://bootstrap.pypa.io/get-pip.py | python3.10 &>/dev/null
+    sudo apt install -y python3.10 python3.10-distutils &>/dev/null && curl -s https://bootstrap.pypa.io/get-pip.py | python3.10 &>/dev/null
     echo "[*] Installed!"
 else
     clear
@@ -164,7 +164,7 @@ fi
 }
 
 function choice_msg() {
-PS3='[* Menu *] Please enter your choice : '
+PS3='[ BotnetInstaller ] Please enter your choice : '
 options=("Install BoTneT" "Update BoTneT" "exit")
 select opt in "${options[@]}"
 do

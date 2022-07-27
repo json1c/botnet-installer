@@ -194,18 +194,12 @@ done
 }
 
 #shit banner
-last_commit
-cat << "EOF" 
- _   _ _   _ ___ ____        ____  _   _
-| | | | | | |_ _/ ___|      | __ )| \ | | telegram @huis_bn
-| |_| | | | || |\___ \ _____|  _ \|  \| | telegram @bruhnet
-|  _  | |_| || | ___) |_____| |_) | |\  | 
-|_| |_|\___/|___|____/      |____/|_| \_|
-EOF
-choice_msg
 os_print
 docker_check
 locale_detect
+last_commit
+echo -e "\e[32m_           _       _+\n\e[32m| |         (_)     | |+\n\e[32m| |__  _   _ _ ___  | |__  _ __+\n\e[32m| '_ \| | | | / __| | '_ \| '_ \+\n\e[32m| | | | |_| | \__ \ | |_) | | | |+\n\e[32m|_| |_|\__,_|_|___/ |_.__/|_| |_|+\n---------------------------------+\n\e[36m telegram @huis_bn & @bruhnet"
+choice_msg
 warning "[ * ] Botnet now installing into your system..." 
 warning "[ * ] Wait 5-7 minutes..." 
 time_sleep

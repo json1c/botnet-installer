@@ -171,7 +171,7 @@ if echo "$answer" | grep -iq "^y" ;then
     success "[ ✔ ] Installed!"
     echo "[ ~ ] Installing python 3.10"
     sudo apt install -y python3.10 python3.10-distutils &>/dev/null && curl -s https://bootstrap.pypa.io/get-pip.py | python3.10 &>/dev/null
-    echo "[ ✔ ] Installed!"
+    success "[ ✔ ] Installed!"
 else
     clear
     warning '[ ! ] User Aborted python 3.10 Installation.'
@@ -206,7 +206,7 @@ time_sleep
 
 ####################### DISTROS CHECK AND INSTALL #####################
 
-if cat /etc/*release | grep ^ID_LIKE | grep debian; then
+if cat /etc/*release | grep ^ID_LIKE | grep debian &>/dev/null; then
         ubuntu_python;
         echo "[ * ] Clonning botnet from git..."
         git clone https://github.com/json1c/telegram-raid-botnet.git ~/telegram-raid-botnet &>/dev/null

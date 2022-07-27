@@ -14,6 +14,8 @@
 # If not, see <https://www.gnu.org/licenses/>.
 set -e
 
+Blue='\033[0;34m'         
+
 #some text bruh
 warning() {
   printf '\e[36m'; echo "$@"; printf '\E[0m'
@@ -110,8 +112,8 @@ if [ -d "$HOME/telegram-raid-botnet" ]; then
         cd "$HOME/telegram-raid-botnet"
         warning "[ ✔ ] Botnet dir detected..."
         time_sleep
-        mkdir "$HOME/old-botnet"
-        mv "$HOME/telegram-raid-botnet" "$HOME/old-botnet" || error "[*] Dir ~/old-botnet is exist!"
+        mkdir "$HOME/old-botnet" &>/dev/null
+        mv "$HOME/telegram-raid-botnet" "$HOME/old-botnet" &>/dev/null || error "[ ! ] Dir ~/old-botnet is exist!"
         warning "[ ~ ] Previous botnet was moved to ~/old-botnet"
     }
     dir_detected="yes"
@@ -180,13 +182,13 @@ fi
 }
 
 function choice_msg() {
-PS3='[ BotnetInstaller ] Please enter your choice : '
-options=("Install BoTneT" "Update BoTneT" "exit")
+PS3='${Blue}[ BotnetInstaller ] Please enter your choice : '
+options=("Install botnet" "Update botnet" "exit")
 select opt in "${options[@]}"
 do
     case $opt in
-        "Install BoTneT") break ;;
-        "Update BoTneT") dir_detection ;;
+        "Install botnet") break ;;
+        "Update botnet") dir_detection ;;
         "exit") exit 1 ;;
         *) error "[ ! ] Enter valid option" ;;
     esac

@@ -50,7 +50,7 @@ script_exit_msg() {
     error "[!] An error accurated"
     error "[*] Try to install botnet from instruction | https://teletype.in/@lkqas/telegram-raid-botnet"
     clear 
-    sleep_time
+    time_sleep
     success "[*] Exiting from installer..."
 }
 

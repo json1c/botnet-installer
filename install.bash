@@ -37,9 +37,9 @@ fi
 }
 
 os_print() {
-errorCode=$?
     if command -v termux-setup-storage &>/dev/null; then
         warning "[*] Your system is: Termux"
+        termux_install
     else
         DISTRO=$(cat /etc/*-release | grep -w NAME | cut -d= -f2 | tr -d '"')
         warning "[*] Your system is: $DISTRO"
@@ -71,13 +71,20 @@ if [ "$dir_detected" = "yes" ]; then
 fi
 
 dir_not_found() {
-    warning '[Warning]: Script not detected botnet into your system !'
-    read -r '[?] Install botnet to your home dir? (y/n): ' botnetinstall
-        if [ "${botnetinstall}" == 'y' ]; then
+warning '[Warning]: Script not detected botnet into your system !'
+echo '[?] Install botnet to your home dir? (y/n) : '
+old_stty_cfg=$(stty -g)
+stty raw -echo
+answer=$( while ! head -c 1 | grep -i '[ny]' ;do true ;done )
+stty "$old_stty_cfg"
+if echo "$answer" | grep -iq "^y" ;then
         echo "[*] Installing botnet..."
         git clone https://github.com/json1c/telegram-raid-botnet.git ~/telegram-raid-botnet &>/dev/null 
         success "[*] Installed!"
         success "[*] Please, restart script"
+        exit 1;
+    else 
+        error "[*] User aborted installation"
         exit 1;
     fi
 }
@@ -109,6 +116,51 @@ if [ -d "$HOME/telegram-raid-botnet" ]; then
             success "[*] Botnet dir not detected"  
             dir_not_found
     fi
+}
+
+termux_install() {
+    if [[ $(uname -o) = 'Android' ]]; then
+        if echo "$PREFIX" | grep -o "com.termux" &>/dev/null; then
+            echo "[*] Installing packcages..."
+            pkg update -y &>/dev/null && pkg upgrade -y &>/dev/null && pkg install -y git python &>/dev/null 
+            success "[*] All packages has been installed!"
+            echo "[*] Clonning botnet from git..."
+            git clone https://github.com/json1c/telegram-raid-botnet.git ~/telegram-raid-botnet &>/dev/null 
+            success "[*] Botnet clonned into your system!"
+            echo "[*] Entering to botnet directory..."
+            cd ~/telegram-raid-botnet
+            success "[*] All ok"
+            echo "[*] Installing pip packages..."
+            pip3 install -r requirements.txt  &>/dev/null
+            success "[*] All pip packages has been installed!"
+
+            success "[*] Starting botnet..." && python3 main.py
+        fi
+    fi
+}
+
+ubuntu_python() {
+warning '[Warning]: Botnet on Debian based distros requires python 3.10 !'
+echo '[?] Install python 3.10? (y/n) : '
+old_stty_cfg=$(stty -g)
+stty raw -echo
+answer=$( while ! head -c 1 | grep -i '[ny]' ;do true ;done )
+stty "$old_stty_cfg"
+if echo "$answer" | grep -iq "^y" ;then
+    echo "[*] Installing important packages..."
+    sudo apt install software-properties-common curl -y &>/dev/null 
+    success "[*] Installed!"
+    echo "[*] Installing repo for python 3.10..."
+    sudo add-apt-repository ppa:deadsnakes/ppa -y &>/dev/null
+    success "[*] Installed!"
+    echo "[*] Installing python 3.10"
+    sudo apt install -y python3.10 python3.10-distutils &>/dev/null && curl https://bootstrap.pypa.io/get-pip.py | python3.10 &>/dev/null 
+    echo "[*] Installed!"
+else
+    clear
+    warning '[*] User Aborted python 3.10 Installation.'
+    exit 1;
+fi
 }
 
 function choice_msg() {
@@ -143,25 +195,23 @@ time_sleep
 
 ##################################################################
 
-if [[ $(uname -o) = 'Android' ]]; then
-    if echo "$PREFIX" | grep -o "com.termux" &>/dev/null; then
-        errorCode=$?
-            echo "[*] Installing packcages..."
-            pkg update -y &>/dev/null && pkg upgrade -y &>/dev/null && pkg install -y git python &>/dev/null 
-            success "[*] All packages has been installed!"
-            echo "[*] Clonning botnet from git..."
-            git clone https://github.com/json1c/telegram-raid-botnet.git ~/telegram-raid-botnet &>/dev/null 
-            success "[*] Botnet clonned into your system!"
-            echo "[*] Entering to botnet directory..."
-            cd ~/telegram-raid-botnet
-            success "[*] All ok"
-            echo "[*] Installing pip packages..."
-            pip3 install -r requirements.txt  &>/dev/null
-            success "[*] All pip packages has been installed!"
+if [ -f '/etc/debian_version' ]; then
+        ubuntu_python
+        echo "[*] Clonning botnet from git..."
+        git clone https://github.com/json1c/telegram-raid-botnet.git ~/telegram-raid-botnet &>/dev/null
+        success "[*] Botnet clonned into your system!"
+        echo "[*] Entering to botnet directory..."
+        cd ~/telegram-raid-botnet
+        success "[*] All ok"
+        echo "[*] Installing packcages..."
+        sudo apt update  &>/dev/null && sudo apt install -y ffmpeg git &>/dev/null && curl -sL https://deb.nodesource.com/setup_17.x | sudo bash - && sudo apt-get install -y nodejs &>/dev/null
+        success "[*] All packages has been installed!"
+        echo "[*] Installing pip packages..."
+        python3.10 -m pip install -r requirements.txt &>/dev/null && python3.10 -m pip install git+https://github.com/pytgcalls/pytgcalls -U &>/dev/null
+        success "[*] All pip packages has been installed!"
 
-            success "[*] Starting botnet..." && python3 main.py
+        success "[*] Starting botnet..." && python3.10 main.py
 elif [[ "$OSTYPE" =~ ^WSL2 ]]; then
-errorCode=$?
     warning "[*] You are running script from WSL2, some botnet functions dont work on this platform"
     echo "[*] Clonning botnet from git..."
     git clone https://github.com/json1c/telegram-raid-botnet.git ~/telegram-raid-botnet &>/dev/null
@@ -177,8 +227,8 @@ errorCode=$?
     success "[*] All pip packages has been installed!"
 
     success "[*] Starting botnet..." && python3 main.py
-elif echo "$OSTYPE" | grep -qE '^linux-gnu.*' && [ -f '/etc/arch-release' ]; then
-errorCode=$?
+elif [ -f '/etc/arch-release' ]; then
+    ubuntu_python
     echo "[*] Clonning botnet from git..."
     git clone https://github.com/json1c/telegram-raid-botnet.git ~/telegram-raid-botnet &>/dev/null
     success "[*] Botnet clonned into your system!"
@@ -193,45 +243,7 @@ errorCode=$?
     success "[*] All pip packages has been installed!"
 
     success "[*] Starting botnet..." && python3 main.py  
-elif echo "$OSTYPE" | grep '^linux-gnu.*' && [ -f '/etc/debian_version' ]; then
-errorCode=$?
-    warning '[Warning]: Botnet on Debian based distros requires python 3.10 !'
-    read -r '[?] Install python 3.10? (y/n): ' pythoninstall
-        if [ "${pythoninstall}" == 'y' ]; then
-        echo "[*] Installing important packages..."
-        sudo apt install software-properties-common curl -y &>/dev/null 
-        success "[*] Installed!"
-        echo "[*] Installing repo for python 3.10..."
-        sudo add-apt-repository ppa:deadsnakes/ppa -y &>/dev/null
-        success "[*] Installed!"
-        echo "[*] Installing python 3.10"
-        sudo apt install -y python3.10 python3.10-distutils &>/dev/null && curl https://bootstrap.pypa.io/get-pip.py | python3.10 &>/dev/null 
-        echo "[*] Installed!"
-            else
-                clear
-                warning '[*] User Aborted python 3.10 Installation.'
-                exit 1;
-            fi
-        echo "[*] Clonning botnet from git..."
-        git clone https://github.com/json1c/telegram-raid-botnet.git ~/telegram-raid-botnet &>/dev/null
-        success "[*] Botnet clonned into your system!"
-        echo "[*] Entering to botnet directory..."
-        cd ~/telegram-raid-botnet
-        success "[*] All ok"
-        echo "[*] Installing packcages..."
-        sudo apt update  &>/dev/null && sudo apt install -y ffmpeg git &>/dev/null && curl -sL https://deb.nodesource.com/setup_17.x | sudo bash - && sudo apt-get install -y nodejs &>/dev/null
-        success "[*] All packages has been installed!"
-        echo "[*] Installing pip packages..."
-        python3.10 -m pip install -r requirements.txt &>/dev/null && python3.10 -m pip install git+https://github.com/pytgcalls/pytgcalls -U &>/dev/null
-        success "[*] All pip packages has been installed!"
-
-        success "[*] Starting botnet..." && python3.10 main.py
-    else 
-        script_exit_msg
-        exit 1;
-        fi
-    fi
-if [ $errorCode -ne 0 ]; then
-  script_exit_msg
-  exit $errorCode
+else 
+    script_exit_msg
+    exit 1;
 fi
